@@ -1,0 +1,5 @@
+- Mobs still spawn when chests are broken
+- Mobs attack each other
+- Mobs burn in sunlight
+
+- Add loot table
