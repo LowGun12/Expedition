@@ -4,3 +4,6 @@ main: me.logan.expedition.Expedition
 api-version: 1.20
 authors: [ LowGun ]
 description: Minecadia Style Expedition
+commands:
+  ExChest:
+
