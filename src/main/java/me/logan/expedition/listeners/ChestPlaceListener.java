@@ -11,16 +11,21 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 public class ChestPlaceListener implements Listener {
+
+    private HashMap<Location, BukkitTask> spawnTasks = new HashMap<>();
 
     private final Expedition main;
 
@@ -46,19 +51,39 @@ public class ChestPlaceListener implements Listener {
                     Location chestLocation = e.getBlock().getLocation();
 
 
-                    new BukkitRunnable() {
+                    BukkitTask task = new BukkitRunnable() {
                         @Override
                         public void run() {
                             spawnMonsters(chestLocation, tier);
                         }
                     }.runTaskTimer(main, 0, 100);
+
+
+                    spawnTasks.put(chestLocation, task);
                 }
 
             }
         }
-
-
     }
+    @EventHandler
+    public void onChestBreak(BlockBreakEvent e) {
+        if (e.getBlock().getType() == Material.CHEST) {
+            Location chestLocation = e.getBlock().getLocation();
+
+
+            if (spawnTasks.containsKey(chestLocation)) {
+
+                BukkitTask task = spawnTasks.get(chestLocation);
+                if (task != null) {
+                    task.cancel();
+                }
+
+                spawnTasks.remove(chestLocation);
+            }
+        }
+    }
+
+
 
     private void spawnMonsters(Location location, int tier) {
         List<Monsters> monsters = Monsters.getMonstersFromTier(tier);

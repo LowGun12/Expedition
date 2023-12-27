@@ -2,4 +2,10 @@
 - Mobs attack each other
 - Mobs burn in sunlight
 
-- Add loot table
+- Command to edit loot tier
+- Way to edit loot and change
+-
+
+
+- Config options for mobs, hp, damage
+- option to create whole new tier

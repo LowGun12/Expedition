@@ -31,6 +31,7 @@ public class ExChest implements CommandExecutor {
 
         Player player = (Player) sender;
 
+
         if (sender.hasPermission("Expedition.admin")) {
             if (args.length == 1) {
                 int tier = Integer.parseInt(args[0]);
