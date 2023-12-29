@@ -1,11 +1,10 @@
-- Mobs still spawn when chests are broken
 - Mobs attack each other
 - Mobs burn in sunlight
-
+- Only spawn if player is in x block range
 - Command to edit loot tier
 - Way to edit loot and change
 -
 
 
-- Config options for mobs, hp, damage
+- Config options for mobs, hp, damage ( Test )
 - option to create whole new tier

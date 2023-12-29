@@ -9,6 +9,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -85,24 +86,46 @@ public class ChestPlaceListener implements Listener {
 
 
 
-    private void spawnMonsters(Location location, int tier) {
-        List<Monsters> monsters = Monsters.getMonstersFromTier(tier);
+        private void spawnMonsters(Location location, int tier) {
+            List<Monsters> monsters = Monsters.getMonstersFromTier(tier);
 
-        Random random = new Random();
-        for (int i = 0; i < 3; i++) {
-            Location spawnLocation = location.clone().add(random.nextInt(5) - 2, 0, random.nextInt(5) - 2);
+            Random random = new Random();
+            for (int i = 0; i < 3; i++) {
+                Location spawnLocation = location.clone().add(random.nextInt(5) - 2, 0, random.nextInt(5) - 2);
 
-            if (spawnLocation.getBlock().getType().isSolid()) {
-                continue;
+                if (spawnLocation.getBlock().getType().isSolid()) {
+                    continue;
+                }
+                Monsters monster = monsters.get(random.nextInt(monsters.size()));
+
+                EntityType entityType = EntityType.valueOf(monster.name());
+                LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(spawnLocation, EntityType.valueOf(monster.name()));
+
+                entity.setMaxHealth(monster.getHealth());
+                entity.setHealth(monster.getHealth());
+                entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(monster.getDamage());
+
+                Player target = findTarget(spawnLocation);
+                if (target != null) {
+                    entity.setAI(true);
+                    entity.attack(target);
+                }
             }
-            Monsters monster = monsters.get(random.nextInt(monsters.size()));
-
-            EntityType entityType = EntityType.valueOf(monster.name());
-            LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(spawnLocation, EntityType.valueOf(monster.name()));
-
-            entity.setMaxHealth(monster.getHealth());
-            entity.setHealth(monster.getHealth());
-            entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(monster.getDamage());
         }
-    }
+
+
+
+        private Player findTarget(Location location) {
+            double closestDistanceSquared = Double.MAX_VALUE;
+            Player target = null;
+
+            for (Player player : location.getWorld().getPlayers()) {
+                double distanceSquared = player.getLocation().distanceSquared(location);
+                if (distanceSquared < closestDistanceSquared) {
+                    closestDistanceSquared = distanceSquared;
+                    target = player;
+                }
+            }
+            return target;
+        }
 }

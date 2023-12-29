@@ -1,59 +1,68 @@
 package me.logan.expedition.enums;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public enum Monsters {
-    WOLF(1, 9, 1),
-    SKELETON(1, 6, 1),
 
-    CREEPER(18, 10, 2),
-    SPIDER(12, 6, 2),
+    WOLF,
+    SKELETON,
+    CREEPER,
+    SPIDER,
+    WITCH,
+    BLAZE,
+    ENDERMAN,
+    SLIME,
+    WITHER_SKELETON,
+    GHAST,
+    IRON_GOLEM,
+    WITHER;
 
-    WITCH(25, 8, 3),
-    BLAZE(22, 9, 3),
+    private int Health;
+    private int Damage;
+    private int Tier;
 
-    ENDERMAN(30, 12, 4),
-    SLIME(25, 7, 4),
-
-    WITHER_SKELETON(35, 10, 5),
-    GHAST(28, 11, 5),
-
-    IRON_GOLEM(40, 15, 6),
-    WITHER(50, 20, 6);
-
-    private final int Health;
-    private final int damage;
-    private final int tier;
-
-    Monsters(int Health, int damage, int tier) {
-        this.Health = Health;
-        this.damage = damage;
-        this.tier = tier;
+    Monsters() {
+        // Default values
+        Health = 20;
+        Damage = 5;
+        Tier = 1;
     }
-
-
 
     public int getHealth() {
         return Health;
     }
 
     public int getDamage() {
-        return damage;
+        return Damage;
     }
 
     public int getTier() {
-        return tier;
+        return Tier;
     }
 
+    public static void setValuesFromConfig(FileConfiguration config) {
+        for (Monsters monster : values()) {
+            ConfigurationSection section = config.getConfigurationSection("monsters." + monster.name());
+
+            if (section != null) {
+                monster.Health = section.getInt("Health", 20);
+                monster.Damage = section.getInt("Damage", 5);
+                monster.Tier = section.getInt("Tier", 1);
+            }
+        }
+    }
 
     public static List<Monsters> getMonstersFromTier(int tier) {
         List<Monsters> monsters = new ArrayList<>();
-        for (Monsters monster : Monsters.values()) {
-            if (monster.getTier() == tier) monsters.add(monster);
+        for (Monsters monster : values()) {
+            if (monster.getTier() == tier) {
+                monsters.add(monster);
+            }
         }
         return monsters;
     }
-
-
 }

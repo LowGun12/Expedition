@@ -1,0 +1,52 @@
+# How close player must be to spawn
+expedition-spawn-range:
+
+monsters:
+  WOLF:
+    Health:
+    Damage:
+    Tier:
+  SKELETON:
+    Health:
+    Damage:
+    Tier:
+  CREEPER:
+    Health:
+    Damage:
+    Tier:
+  SPIDER:
+    Health:
+    Damage:
+    Tier:
+  WITCH:
+    Health:
+    Damage:
+    Tier:
+  BLAZE:
+    Health:
+    Damage:
+    Tier:
+  ENDERMAN:
+    Health:
+    Damage:
+    Tier:
+  SLIME:
+    Health:
+    Damage:
+    Tier:
+  WITHER_SKELETON:
+    Health:
+    Damage:
+    Tier:
+  GHAST:
+    Health:
+    Damage:
+    Tier:
+  IRON_GOLEM:
+    Health:
+    Damage:
+    Tier:
+  WITHER:
+    Health:
+    Damage:
+    Tier:

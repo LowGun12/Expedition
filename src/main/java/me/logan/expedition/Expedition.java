@@ -3,6 +3,7 @@ package me.logan.expedition;
 import me.logan.expedition.commands.ExChest;
 import me.logan.expedition.commands.ExLootCommand;
 import me.logan.expedition.data.LootTableDataManager;
+import me.logan.expedition.enums.Monsters;
 import me.logan.expedition.listeners.ChestPlaceListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +13,9 @@ public final class Expedition extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        Monsters.setValuesFromConfig(getConfig());
         getCommand("ExChest").setExecutor(new ExChest(this));
         getCommand("Ex").setExecutor(new ExLootCommand(this));
         getCommand("Extier").setExecutor(new ExLootCommand(this));
@@ -40,5 +44,6 @@ public final class Expedition extends JavaPlugin {
     public void registerLoottable() {
         lootTableManager = new LootTableDataManager(this, this.getDataFolder().getPath());
     }
+
 
 }
