@@ -45,7 +45,7 @@ public class ExLootCommand implements CommandExecutor {
                 if (lootFile.exists()) {
                     try {
                         FileReader reader = new FileReader(lootFile);
-                        String itemName = ChatColor.RED + "Tier" + i;
+                        String itemName = ChatColor.RED + "Tier " + i;
                         ItemStack item = new ItemStack(Material.CHEST);
                         ItemMeta meta = item.getItemMeta();
                         meta.setDisplayName(itemName);

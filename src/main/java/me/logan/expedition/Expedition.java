@@ -5,6 +5,7 @@ import me.logan.expedition.commands.ExLootCommand;
 import me.logan.expedition.data.LootTableDataManager;
 import me.logan.expedition.enums.Monsters;
 import me.logan.expedition.listeners.ChestPlaceListener;
+import me.logan.expedition.listeners.LootViewListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Expedition extends JavaPlugin {
@@ -32,11 +33,13 @@ public final class Expedition extends JavaPlugin {
 
     private void registerEvents() {
         ChestPlaceListener chestPlaceListener = new ChestPlaceListener(this);
+        LootViewListener lootViewListener = new LootViewListener(this);
 
 
 
 
         getServer().getPluginManager().registerEvents(chestPlaceListener, this);
+        getServer().getPluginManager().registerEvents(lootViewListener, this);
 
     }
 
