@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Monsters {
-    WOLF(40, 9, 1),
-    SKELETON(25, 6, 1),
+    WOLF(1, 9, 1),
+    SKELETON(1, 6, 1),
 
     CREEPER(18, 10, 2),
     SPIDER(12, 6, 2),

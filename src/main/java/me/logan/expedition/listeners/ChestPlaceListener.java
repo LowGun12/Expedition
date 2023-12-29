@@ -96,6 +96,8 @@ public class ChestPlaceListener implements Listener {
                 continue;
             }
             Monsters monster = monsters.get(random.nextInt(monsters.size()));
+
+            EntityType entityType = EntityType.valueOf(monster.name());
             LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(spawnLocation, EntityType.valueOf(monster.name()));
 
             entity.setMaxHealth(monster.getHealth());

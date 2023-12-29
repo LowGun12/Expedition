@@ -1,0 +1,53 @@
+package me.logan.expedition.commands;
+
+import com.google.gson.Gson;
+import me.logan.expedition.Expedition;
+import me.logan.expedition.data.LootTableDataManager;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
+public class CreateTierCommand implements CommandExecutor {
+
+
+    private final LootTableDataManager lootTableDataManager;
+
+    public CreateTierCommand(LootTableDataManager lootTableManager) {
+        this.lootTableDataManager = lootTableManager;
+    }
+
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+
+        if (!(sender instanceof Player)) {
+            return false;
+        }
+
+        Player player = (Player) sender;
+
+        if (args.length != 2) {
+            player.sendMessage("Usage: /exloot create <Tier>");
+            return false;
+        }
+        if (args[0] != "create") {
+            player.sendMessage("Usage: /exloot create <Tier>");
+            return false;
+        }
+
+        String tierNum = args[1];
+        Expedition plugin = (Expedition) Bukkit.getPluginManager().getPlugin("Expedition");
+        if (plugin != null) {
+            plugin.registerLoottable(tierNum); // Set the file name based on the player's input
+            player.sendMessage("Tier " + tierNum + " loot table created.");
+
+            return true;
+        }
+        return false;
+    }
+}
+
+
