@@ -3,13 +3,16 @@ Complete
 - Config options for mobs, hp, damage ( Test )
 
 
-Test
+To do / test
 - Mobs burn in sunlight
 - Only spawn if player is in x block range
 - Command to edit loot tier
 - Way to edit loot and change
--
+- Move loot editing to /ex loot edit
+- Refresh command to reload / update json config
+- Add option to change %'s
 
 
 
 - option to create whole new tier
+- Option to edit mobs / their armor

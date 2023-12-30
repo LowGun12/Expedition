@@ -18,11 +18,9 @@ import java.util.logging.Level;
 public class LootViewListener implements Listener {
 
     private final Expedition main;
-    private final ExLootCommand exlootCommand;
 
-    public LootViewListener(Expedition main, ExLootCommand exLootCommand) {
+    public LootViewListener(Expedition main) {
         this.main = main;
-        this.exlootCommand = exLootCommand;
     }
 
     @EventHandler
@@ -43,30 +41,29 @@ public class LootViewListener implements Listener {
 
                         // Open the specific tier inventory for the player
                         player.openInventory(lootInv);
-                        exlootCommand.setEditingTier(player, tier); // Store the tier player is currently editing
-
                     }
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
                 }
-            } else if (exlootCommand.isEditingTier(player)) {
-                int editingTier = exlootCommand.getEditingTier(player);
-                String fileName = editingTier + ".json";
-                File lootFile = new File(main.getDataFolder(), "Loot Tables/" + fileName);
+            }
+        }
+    }
 
-                if (!lootFile.exists()) {
-                    try {
-                        lootFile.createNewFile();
-                    } catch (IOException ex) {
-                        main.getLogger().log(Level.SEVERE, "Could not create loot file: " + fileName, ex);
-                        return;
-                    }
-                }
+    @EventHandler
+    public void onPlayerInventoryClick(InventoryClickEvent e) {
+        Player player = (Player) e.getWhoClicked();
+        Inventory clickedInv = e.getClickedInventory();
+        ItemStack clickedItem = e.getCurrentItem();
 
-                try (FileWriter writer = new FileWriter(lootFile, true)) {
-                    writer.write(clickedItem.getType().name() + "\n"); // Write item name/type to the file
-                } catch (IOException ex) {
-                    main.getLogger().log(Level.SEVERE, "Could not write to loot file: " + fileName, ex);
+        if (clickedInv != null && clickedItem != null && clickedInv == player.getInventory()) {
+            // Check if the player's inventory item click logic matches your conditions
+            // For instance, add to lootInv if needed
+            // Example condition:
+            if (e.getClickedInventory().equals(player.getInventory())) {
+                Inventory topInv = player.getOpenInventory().getTopInventory();
+                if (topInv != null && e.getView().getTitle().startsWith("Tier ")) {
+                    e.setCancelled(true);
+                    topInv.addItem(clickedItem.clone()); // Add a copy of the clicked item to the loot inventory
                 }
             }
         }
