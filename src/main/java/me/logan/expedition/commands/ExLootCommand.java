@@ -15,13 +15,31 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExLootCommand implements CommandExecutor {
     private final Expedition main;
+    private final Map<Player, Integer> editingTiers;
 
     public ExLootCommand(Expedition main) {
         this.main = main;
+        this.editingTiers = new HashMap<>();
     }
+
+    public void setEditingTier(Player player, int tier) {
+        editingTiers.put(player, tier);
+    }
+
+    public int getEditingTier(Player player) {
+        return editingTiers.getOrDefault(player, -1);
+    }
+
+    public boolean isEditingTier(Player player) {
+        return editingTiers.containsKey(player);
+    }
+
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
