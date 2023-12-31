@@ -1,5 +1,6 @@
 package me.logan.expedition.utils;
 
+import me.logan.expedition.Expedition;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,14 +1,19 @@
 Complete
-- Mobs attack each other
-- Config options for mobs, hp, damage ( Test )
+- Config options for mobs, hp, damage
+- Command to edit loot tier
+- Move loot editing to /ex loot edit
 
 
 To do / test
+- Fix Item Seralizing
+  - Fix the path /loottables/x
+  - Fix the seralized string
 - Mobs burn in sunlight
+- Mobs attack each other
 - Only spawn if player is in x block range
-- Command to edit loot tier
+
 - Way to edit loot and change
-- Move loot editing to /ex loot edit
+
 - Refresh command to reload / update json config
 - Add option to change %'s
 
