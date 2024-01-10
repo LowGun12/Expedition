@@ -23,6 +23,7 @@ public class ExLootCommand implements CommandExecutor {
     private final Expedition main;
     public ExLootCommand(Expedition main) {
         this.main = main;
+
     }
 
 
@@ -87,6 +88,7 @@ public class ExLootCommand implements CommandExecutor {
                         meta.setDisplayName(itemName);
                         item.setItemMeta(meta);
                         tierGui.setItem(i - 1, item);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

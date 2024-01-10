@@ -1,67 +1,89 @@
 package me.logan.expedition.utils;
 
-import me.logan.expedition.Expedition;
+import com.google.gson.Gson;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import javax.xml.crypto.Data;
 import java.io.*;
-import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemStackSerializer {
 
-    private Expedition main;
+    private final Gson gson;
+    private final String DataFolderPath;
 
-    public ItemStackSerializer(Expedition main) {
-        this.main = main;
-    }
-    private static final Logger logger = Logger.getLogger(ItemStackSerializer.class.getName());
-
-    public byte[] serializeItemStack(ItemStack itemStack) throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
-        dataOutput.writeObject(itemStack);
-        dataOutput.close();
-
-        return outputStream.toByteArray();
-        }
-
-    public static ItemStack deserializeItemStack(String serializedItem) {
-        try {
-            byte[] data = Base64.getDecoder().decode(serializedItem);
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-            ItemStack itemStack = (ItemStack) dataInput.readObject();
-            dataInput.close();
-            return itemStack;
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error while deserializing ItemStack", e);
-            return null;
-        }
+    public ItemStackSerializer(String pluginDataFolderPath) {
+        this.gson = new Gson();
+        this.DataFolderPath = pluginDataFolderPath;
     }
 
-    public void saveItemToJson(int tier, ItemStack item) {
-        String filePath = tier + ".json";
-        File file = new File(main.getDataFolder(), filePath);
+    public void saveItemToJson(int tier, ItemStack itemStack) {
+        Map<String, Object> serialized = serializeItemStack(itemStack);
 
-        try {
-            byte[] serializedItemStack = serializeItemStack(item);
+        String fileName = tier + ".json";
+        String filePath = DataFolderPath + File.separator + "Loot Tables" + File.separator + fileName;
 
-            // Save the serialized ItemStack to the JSON file
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            fileOutputStream.write(serializedItemStack);
-            fileOutputStream.close();
-
-            Bukkit.getLogger().info("ItemStack saved to " + filePath);
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            gson.toJson(serialized, fileWriter);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void loadItemToGui(int tier) {
 
+    private Map<String, Object> serializeItemStack(ItemStack itemStack) {
+        Map<String, Object> serialized = new HashMap<>();
+        serialized.put("item", itemStack.serialize());
+        return serialized;
     }
+
+    private ItemStack[] deserializeItems(String json) {
+        try {
+            Gson gson = new Gson();
+            Map<String, Object> serialized = gson.fromJson(json, Map.class);
+            if (serialized != null && serialized.containsKey("item")) {
+                Map<String, Object> itemMap = (Map<String, Object>) serialized.get("item");
+                ItemStack itemStack = ItemStack.deserialize(itemMap);
+                return new ItemStack[]{itemStack};
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void loadLootGui(int tier, Player player) {
+        File lootFolder = new File(DataFolderPath, "Loot Tables");
+        if (!lootFolder.exists() || !lootFolder.isDirectory()) {
+            return;
+        }
+
+        File lootFile = new File(lootFolder, tier + ".json");
+        if (!lootFile.exists()) {
+            return;
+        }
+
+        try (FileReader reader = new FileReader(lootFile)) {
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                jsonContent.append(line);
+            }
+            // Deserialize JSON content to ItemStacks and add to inventory
+            ItemStack[] items = deserializeItems(jsonContent.toString());
+            if (items != null) {
+                Inventory lootInv = Bukkit.createInventory(null, 54, "Tier " + tier + "Loot");
+                lootInv.setContents(items);
+                player.openInventory(lootInv);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

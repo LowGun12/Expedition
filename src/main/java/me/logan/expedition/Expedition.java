@@ -6,17 +6,20 @@ import me.logan.expedition.data.LootTableDataManager;
 import me.logan.expedition.enums.Monsters;
 import me.logan.expedition.listeners.ChestPlaceListener;
 import me.logan.expedition.listeners.LootViewListener;
+import me.logan.expedition.utils.ItemStackSerializer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Expedition extends JavaPlugin {
 
     private static LootTableDataManager lootTableManager;
+    private ItemStackSerializer itemStackSerializer;
 
     @Override
     public void onEnable() {
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         Monsters.setValuesFromConfig(getConfig());
+        itemStackSerializer = new ItemStackSerializer(this.getDataFolder().getPath());
         getCommand("ExChest").setExecutor(new ExChest(this));
         getCommand("Ex").setExecutor(new ExLootCommand(this));
         getCommand("Extier").setExecutor(new ExLootCommand(this));

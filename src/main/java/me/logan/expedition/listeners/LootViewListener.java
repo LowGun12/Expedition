@@ -20,7 +20,7 @@ public class LootViewListener implements Listener {
 
     public LootViewListener(Expedition main) {
         this.main = main;
-        this.itemStackSerializer = new ItemStackSerializer(main);
+        this.itemStackSerializer = new ItemStackSerializer(main.getDataFolder().getPath());
     }
 
     @EventHandler
@@ -37,8 +37,7 @@ public class LootViewListener implements Listener {
                 try {
                     if (words.length == 2) {
                         int tier = Integer.parseInt(words[1]);
-                        Inventory lootInv = Bukkit.createInventory(null, 54, "Tier " + tier);
-                        player.openInventory(lootInv);
+                        itemStackSerializer.loadLootGui(tier, player);
                     }
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
@@ -73,14 +72,14 @@ public class LootViewListener implements Listener {
             Bukkit.getLogger().info("A");
             if (e.getClickedInventory().equals(player.getInventory())) {
                 Bukkit.getLogger().info("B");
-                Inventory topInv = player.getOpenInventory().getTopInventory();
-                if (topInv != null && e.getView().getTitle().startsWith("Edit ")) {
+                Inventory lootInv = player.getOpenInventory().getTopInventory();
+                if (lootInv != null && e.getView().getTitle().startsWith("Edit ")) {
                     String itemName = e.getView().getTitle();
                     String[] words = itemName.split(" ");
                     int tier = Integer.parseInt(words[2]);
                    itemStackSerializer.saveItemToJson(tier, clickedItem);
                     e.setCancelled(true);
-                    topInv.addItem(clickedItem.clone());
+                    lootInv.addItem(clickedItem.clone());
                 }
             }
         }
