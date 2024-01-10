@@ -5,6 +5,7 @@ import me.logan.expedition.commands.ExLootCommand;
 import me.logan.expedition.utils.ItemStackSerializer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -44,6 +45,15 @@ public class LootViewListener implements Listener {
                 }
             }
         }
+
+        if (e.getView().getTitle().startsWith("Tier ")) {
+            e.setCancelled(true);
+            if (e.getWhoClicked() != null && e.getClickedInventory().equals(e.getClickedInventory())) {
+                e.setCancelled(true);
+
+            }
+        }
+
         if (clickedInv != null && clickedItem != null && e.getView().getTitle().equals("Edit Tier Loot")) {
             e.setCancelled(true);
             if (clickedItem.getType() == Material.CHEST) {
@@ -53,7 +63,7 @@ public class LootViewListener implements Listener {
                     if (words.length == 2) {
                         int tier = Integer.parseInt(words[1]);
                         Inventory lootInv = Bukkit.createInventory(null, 54, "Edit Tier " + tier);
-                        player.openInventory(lootInv);
+                        itemStackSerializer.loadLootGui(tier, player);
                     }
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
@@ -69,9 +79,7 @@ public class LootViewListener implements Listener {
         ItemStack clickedItem = e.getCurrentItem();
 
         if (clickedInv != null && clickedItem != null && clickedInv == player.getInventory()) {
-            Bukkit.getLogger().info("A");
             if (e.getClickedInventory().equals(player.getInventory())) {
-                Bukkit.getLogger().info("B");
                 Inventory lootInv = player.getOpenInventory().getTopInventory();
                 if (lootInv != null && e.getView().getTitle().startsWith("Edit ")) {
                     String itemName = e.getView().getTitle();

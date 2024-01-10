@@ -75,11 +75,11 @@ public class ItemStackSerializer {
             }
             // Deserialize JSON content to ItemStacks and add to inventory
             ItemStack[] items = deserializeItems(jsonContent.toString());
+            Inventory lootInv = Bukkit.createInventory(null, 54, "Tier " + tier + " Loot");
             if (items != null) {
-                Inventory lootInv = Bukkit.createInventory(null, 54, "Tier " + tier + "Loot");
                 lootInv.setContents(items);
-                player.openInventory(lootInv);
             }
+            player.openInventory(lootInv);
         } catch (IOException e) {
             e.printStackTrace();
         }

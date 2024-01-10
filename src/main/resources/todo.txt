@@ -2,18 +2,17 @@ Complete
 - Config options for mobs, hp, damage
 - Command to edit loot tier
 - Move loot editing to /ex loot edit
+- Fix Item Seralizing
+- Fix the path /loottables/x
+- Fix the seralized string
 
 
 To do / test
-- Fix Item Seralizing
-  - Fix the path /loottables/x
-  - Fix the seralized string
 - Mobs burn in sunlight
 - Mobs attack each other
 - Only spawn if player is in x block range
-
-- Way to edit loot and change
-
+- "Go back" button on loot guis
+- Way to edit loot and chance
 - Refresh command to reload / update json config
 - Add option to change %'s
 
