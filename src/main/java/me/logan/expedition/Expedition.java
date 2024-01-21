@@ -51,5 +51,4 @@ public final class Expedition extends JavaPlugin {
         lootTableManager = new LootTableDataManager(this, this.getDataFolder().getPath());
     }
 
-
 }

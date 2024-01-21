@@ -2,6 +2,7 @@ package me.logan.expedition.listeners;
 
 import me.logan.expedition.Expedition;
 import me.logan.expedition.enums.Monsters;
+import me.logan.expedition.utils.NBTUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,7 +46,7 @@ public class ChestPlaceListener implements Listener {
             if (meta != null) {
                 Bukkit.getLogger().info("Placed tiered chest");
                 NamespacedKey key = new NamespacedKey(main, "tier");
-                Integer tier = meta .getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
+                Integer tier = meta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
 
                 if (tier != null) {
                     Bukkit.getLogger().info("Chest has a tier");
@@ -104,12 +105,12 @@ public class ChestPlaceListener implements Listener {
                 entity.setMaxHealth(monster.getHealth());
                 entity.setHealth(monster.getHealth());
                 entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(monster.getDamage());
+                NBTUtils nbtUtils = new NBTUtils(main);
+                nbtUtils.setNBTTag(entity, tier);
+                Integer nbtValue = nbtUtils.getNBTTag(entity);
+                System.out.println("NBTTag value for entity: " + nbtValue);
 
                 Player target = findTarget(spawnLocation);
-                if (target != null) {
-                    entity.setAI(true);
-                    entity.attack(target);
-                }
             }
         }
 

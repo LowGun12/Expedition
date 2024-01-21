@@ -17,7 +17,7 @@ public enum Monsters {
     ENDERMAN,
     SLIME,
     WITHER_SKELETON,
-    GHAST,
+    SILVERFISH,
     IRON_GOLEM,
     WITHER;
 
