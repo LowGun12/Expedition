@@ -3,6 +3,7 @@ package me.logan.expedition.listeners;
 import me.logan.expedition.Expedition;
 import me.logan.expedition.commands.ExLootCommand;
 import me.logan.expedition.utils.ItemStackSerializer;
+import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
@@ -63,6 +64,8 @@ public class LootViewListener implements Listener {
                     if (words.length == 2) {
                         int tier = Integer.parseInt(words[1]);
                        Inventory lootInv = Bukkit.createInventory(null, 54, "Edit Tier " + tier);
+
+                        itemStackSerializer.addLootToGui(tier, lootInv);
                         player.openInventory(lootInv);
                     }
                 } catch (NumberFormatException ex) {

@@ -87,7 +87,7 @@ public class ItemStackSerializer {
         }
     }
 
-    public void addLootToGui(int tier, Player player, Inventory inventory) {
+    public void addLootToGui(int tier, Inventory inventory) {
 
         File lootFolder = new File(DataFolderPath, "Loot Tables");
         if (!lootFolder.exists() || !lootFolder.isDirectory()) {
@@ -110,7 +110,6 @@ public class ItemStackSerializer {
             if (items != null) {
                 inventory.setContents(items);
             }
-            player.openInventory(inventory);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,11 +140,6 @@ public class ItemStackSerializer {
             if (items != null && items.length > 0) {
                 Random random = new Random();
                 ItemStack randomItem = items[random.nextInt(items.length)];
-
-                // Optionally, you can remove the chosen item from the loot table
-                // to prevent it from being chosen again in the future.
-                // However, this depends on your specific use case.
-
                 return randomItem;
             }
         } catch (IOException e) {
