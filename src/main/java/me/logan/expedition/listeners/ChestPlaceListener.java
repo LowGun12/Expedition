@@ -99,7 +99,7 @@ public class ChestPlaceListener implements Listener {
                 }
                 Monsters monster = monsters.get(random.nextInt(monsters.size()));
 
-                EntityType entityType = EntityType.valueOf(monster.name());
+                // EntityType entityType = EntityType.valueOf(monster.name());
                 LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(spawnLocation, EntityType.valueOf(monster.name()));
 
                 entity.setMaxHealth(monster.getHealth());
@@ -110,7 +110,7 @@ public class ChestPlaceListener implements Listener {
                 Integer nbtValue = nbtUtils.getNBTTag(entity);
                 System.out.println("NBTTag value for entity: " + nbtValue);
 
-                Player target = findTarget(spawnLocation);
+                // Player target = findTarget(spawnLocation);
             }
         }
 

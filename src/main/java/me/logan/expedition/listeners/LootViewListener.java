@@ -54,7 +54,7 @@ public class LootViewListener implements Listener {
             }
         }
 
-        if (clickedInv != null && clickedItem != null && e.getView().getTitle().equals("Edit Tier Loot")) {
+        if (clickedInv != null && clickedItem != null && e.getView().getTitle().equals("Loot Editor")) {
             e.setCancelled(true);
             if (clickedItem.getType() == Material.CHEST) {
                 String displayName = clickedItem.getItemMeta().getDisplayName();
@@ -62,8 +62,8 @@ public class LootViewListener implements Listener {
                 try {
                     if (words.length == 2) {
                         int tier = Integer.parseInt(words[1]);
-                        Inventory lootInv = Bukkit.createInventory(null, 54, "Edit Tier " + tier);
-                        itemStackSerializer.loadLootGui(tier, player);
+                       Inventory lootInv = Bukkit.createInventory(null, 54, "Edit Tier " + tier);
+                        player.openInventory(lootInv);
                     }
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();

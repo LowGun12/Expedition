@@ -9,7 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class ItemStackSerializer {
 
@@ -40,7 +42,7 @@ public class ItemStackSerializer {
         return serialized;
     }
 
-    private ItemStack[] deserializeItems(String json) {
+    public ItemStack[] deserializeItems(String json) {
         try {
             Gson gson = new Gson();
             Map<String, Object> serialized = gson.fromJson(json, Map.class);
@@ -83,6 +85,74 @@ public class ItemStackSerializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addLootToGui(int tier, Player player, Inventory inventory) {
+
+        File lootFolder = new File(DataFolderPath, "Loot Tables");
+        if (!lootFolder.exists() || !lootFolder.isDirectory()) {
+            return;
+        }
+
+        File lootFile = new File(lootFolder, tier + ".json");
+        if (!lootFile.exists()) {
+            return;
+        }
+
+        try (FileReader reader = new FileReader(lootFile)) {
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                jsonContent.append(line);
+            }
+            ItemStack[] items = deserializeItems(jsonContent.toString());
+            if (items != null) {
+                inventory.setContents(items);
+            }
+            player.openInventory(inventory);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public ItemStack generateLoot(int tier, Player player) {
+        File lootFolder = new File(DataFolderPath, "Loot Tables");
+        if (!lootFolder.exists() || !lootFolder.isDirectory()) {
+            return null;
+        }
+
+        File lootFile = new File(lootFolder, tier + ".json");
+
+        if (!lootFile.exists()) {
+            return null;
+        }
+
+        try (FileReader reader = new FileReader(lootFile)) {
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                jsonContent.append(line);
+            }
+
+            ItemStack[] items = deserializeItems(jsonContent.toString());
+            if (items != null && items.length > 0) {
+                Random random = new Random();
+                ItemStack randomItem = items[random.nextInt(items.length)];
+
+                // Optionally, you can remove the chosen item from the loot table
+                // to prevent it from being chosen again in the future.
+                // However, this depends on your specific use case.
+
+                return randomItem;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

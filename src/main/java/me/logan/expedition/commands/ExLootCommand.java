@@ -21,9 +21,12 @@ import java.util.Map;
 
 public class ExLootCommand implements CommandExecutor {
     private final Expedition main;
+    private final ItemStackSerializer itemStackSerializer;
+
+
     public ExLootCommand(Expedition main) {
         this.main = main;
-
+        this.itemStackSerializer = new ItemStackSerializer(main.getDataFolder().getPath());
     }
 
 
@@ -69,7 +72,7 @@ public class ExLootCommand implements CommandExecutor {
         if (args.length == 2 && args[0].equalsIgnoreCase("loot") && args[1].equalsIgnoreCase("edit")) {
             Player player = (Player) sender;
 
-            Inventory tierGui = Bukkit.createInventory(null, 9, "Edit Tier Loot");
+            Inventory tierGui = Bukkit.createInventory(null, 9, "Loot Editor");
 
             File lootFolder = new File(main.getDataFolder(), "Loot Tables");
             if (!lootFolder.exists() || !lootFolder.isDirectory()) {
@@ -94,7 +97,6 @@ public class ExLootCommand implements CommandExecutor {
                     }
                 }
             }
-
             player.openInventory(tierGui);
         }
         return true;

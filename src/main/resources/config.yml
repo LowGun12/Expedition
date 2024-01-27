@@ -6,47 +6,59 @@ monsters:
     Health:
     Damage:
     Tier:
+    Experience:
   SKELETON:
     Health:
     Damage:
     Tier:
+    Experience:
   CREEPER:
     Health:
     Damage:
     Tier:
+    Experience:
   SPIDER:
     Health:
     Damage:
     Tier:
+    Experience:
   WITCH:
     Health:
     Damage:
     Tier:
+    Experience:
   BLAZE:
     Health:
     Damage:
     Tier:
+    Experience:
   ENDERMAN:
     Health:
     Damage:
     Tier:
+    Experience:
   SLIME:
     Health:
     Damage:
     Tier:
+    Experience:
   WITHER_SKELETON:
     Health:
     Damage:
     Tier:
+    Experience:
   GHAST:
     Health:
     Damage:
     Tier:
+    Experience:
   IRON_GOLEM:
     Health:
     Damage:
     Tier:
+    Experience:
   WITHER:
     Health:
     Damage:
     Tier:
+    Experience:

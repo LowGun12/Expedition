@@ -24,12 +24,14 @@ public enum Monsters {
     private int Health;
     private int Damage;
     private int Tier;
+    private int Experience;
 
     Monsters() {
         // Default values
         Health = 20;
         Damage = 5;
         Tier = 1;
+        Experience = 10;
     }
 
     public int getHealth() {
@@ -43,6 +45,9 @@ public enum Monsters {
     public int getTier() {
         return Tier;
     }
+    public int getExperience() {
+        return Experience;
+    }
 
     public static void setValuesFromConfig(FileConfiguration config) {
         for (Monsters monster : values()) {
@@ -52,6 +57,7 @@ public enum Monsters {
                 monster.Health = section.getInt("Health", 20);
                 monster.Damage = section.getInt("Damage", 5);
                 monster.Tier = section.getInt("Tier", 1);
+                monster.Experience = section.getInt("Experience", 10);
             }
         }
     }
