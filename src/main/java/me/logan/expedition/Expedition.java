@@ -7,6 +7,8 @@ import me.logan.expedition.database.DatabaseManager;
 import me.logan.expedition.enums.Monsters;
 import me.logan.expedition.listeners.ChestPlaceListener;
 import me.logan.expedition.listeners.LootViewListener;
+import me.logan.expedition.listeners.MonsterListener;
+import me.logan.expedition.listeners.PlayerJoinListener;
 import me.logan.expedition.utils.ItemStackSerializer;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,9 +49,11 @@ public final class Expedition extends JavaPlugin {
     private void registerEvents() {
         ChestPlaceListener chestPlaceListener = new ChestPlaceListener(this);
         LootViewListener lootViewListener = new LootViewListener(this);
+        MonsterListener monsterListener = new MonsterListener(this);
+        PlayerJoinListener playerJoinListener = new PlayerJoinListener(databaseManager);
 
-
-
+        getServer().getPluginManager().registerEvents(playerJoinListener, this);
+        getServer().getPluginManager().registerEvents(monsterListener, this);
         getServer().getPluginManager().registerEvents(chestPlaceListener, this);
         getServer().getPluginManager().registerEvents(lootViewListener, this);
 

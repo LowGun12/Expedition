@@ -87,32 +87,32 @@ public class ChestPlaceListener implements Listener {
 
 
 
-        private void spawnMonsters(Location location, int tier) {
-            List<Monsters> monsters = Monsters.getMonstersFromTier(tier);
+    private void spawnMonsters(Location location, int tier) {
+        List<Monsters> monsters = Monsters.getMonstersFromTier(tier);
 
-            Random random = new Random();
-            for (int i = 0; i < 3; i++) {
-                Location spawnLocation = location.clone().add(random.nextInt(5) - 2, 0, random.nextInt(5) - 2);
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            int x = random.nextInt(5) - 2;
+            int z = random.nextInt(5) - 2;
 
-                if (spawnLocation.getBlock().getType().isSolid()) {
-                    continue;
-                }
-                Monsters monster = monsters.get(random.nextInt(monsters.size()));
+            Location spawnLocation = location.clone().add(x, 0, z);
 
-                // EntityType entityType = EntityType.valueOf(monster.name());
-                LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(spawnLocation, EntityType.valueOf(monster.name()));
-
-                entity.setMaxHealth(monster.getHealth());
-                entity.setHealth(monster.getHealth());
-                entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(monster.getDamage());
-                NBTUtils nbtUtils = new NBTUtils(main);
-                nbtUtils.setNBTTag(entity, tier);
-                Integer nbtValue = nbtUtils.getNBTTag(entity);
-                System.out.println("NBTTag value for entity: " + nbtValue);
-
-                // Player target = findTarget(spawnLocation);
+            if (spawnLocation.getBlock().getType().isSolid()) {
+                continue;
             }
+            Monsters monster = monsters.get(random.nextInt(monsters.size()));
+
+            LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(spawnLocation, EntityType.valueOf(monster.name()));
+
+            entity.setMaxHealth(monster.getHealth());
+            entity.setHealth(monster.getHealth());
+            entity.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(monster.getDamage());
+            NBTUtils nbtUtils = new NBTUtils(main);
+            nbtUtils.setNBTTag(entity, tier);
+            Integer nbtValue = nbtUtils.getNBTTag(entity);
+            System.out.println("NBTTag value for entity: " + nbtValue);
         }
+    }
 
 
 
@@ -129,4 +129,6 @@ public class ChestPlaceListener implements Listener {
             }
             return target;
         }
+
+
 }

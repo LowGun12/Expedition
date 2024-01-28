@@ -14,6 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.Material;
 import org.bukkit.Bukkit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LootViewListener implements Listener {
 
     private final Expedition main;
@@ -63,8 +66,7 @@ public class LootViewListener implements Listener {
                 try {
                     if (words.length == 2) {
                         int tier = Integer.parseInt(words[1]);
-                       Inventory lootInv = Bukkit.createInventory(null, 54, "Edit Tier " + tier);
-
+                        Inventory lootInv = Bukkit.createInventory(null, 54, "Edit Tier " + tier);
                         itemStackSerializer.addLootToGui(tier, lootInv);
                         player.openInventory(lootInv);
                     }
@@ -88,11 +90,22 @@ public class LootViewListener implements Listener {
                     String itemName = e.getView().getTitle();
                     String[] words = itemName.split(" ");
                     int tier = Integer.parseInt(words[2]);
-                   itemStackSerializer.saveItemToJson(tier, clickedItem);
+
+                    List<ItemStack> existingItems = itemStackSerializer.loadItemsFromJson(tier);
+
+                    if (existingItems == null) {
+                        existingItems = new ArrayList<>();
+                    }
+
+                    existingItems.add(clickedItem.clone());
+
+                    itemStackSerializer.saveItemsToJson(tier, existingItems);
+
                     e.setCancelled(true);
                     lootInv.addItem(clickedItem.clone());
                 }
             }
         }
     }
+
 }
